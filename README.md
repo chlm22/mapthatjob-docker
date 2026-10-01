@@ -1,9 +1,14 @@
-# mapthatjob-docker Edition
-Recreating my MapThatJob web application because AWS got too expensive :S
+<div align="center">
+  <img src="frontend/public/apple-touch-icon.png" alt="MapThatJob Logo" width="100" height="100" style="border-radius: 12px;" />
+  <h1>MapThatJob</h1>
+  <p><em>Recreating my MapThatJob web application because AWS got too expensive </em>:S</p>
+</div>
+
+---
 
 A containerized, lightning-fast job mapping application built for local demonstration. Search any city, and live job listings appear simultaneously on an interactive Leaflet map and a synchronized list.
 
-## Architecture & Engineering Decisions
+## 🏛️ Architecture & Engineering Decisions
 This version of MapThatJob was intentionally architected as a lightweight, database-free microservice to guarantee reliable, zero-cost local demonstrations. 
 
 * **Isolated Containers:** The React frontend and Express backend run in separate Docker containers on a private network, perfectly mirroring a production-grade microservices environment.
@@ -28,7 +33,8 @@ Create a `.env` file in the root directory (alongside `docker-compose.yml`) and 
 ```env
 ADZUNA_APP_ID=your_app_id_here
 ADZUNA_APP_KEY=your_app_key_here
-PORT=8080
+PORT=8080 
+```
 ***Make sure Ensure you have a .gitignore file that includes .env before pushing this project to a public repository to protect your API keys.***
 
 ### 3. Launch the Application
