@@ -4,7 +4,8 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - .env
+      - path: .env
+        required: false
     environment:
       - PORT=8080
 

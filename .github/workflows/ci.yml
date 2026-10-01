@@ -12,17 +12,39 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Run backend unit tests
+        working-directory: ./backend
+        run: |
+          npm ci
+          npm test
 
       - name: Start services using Docker Compose
-        env:
-          # Pulls the secrets you saved in GitHub Settings
-          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
-          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
         run: docker compose up --build -d
 
       - name: Wait for backend to be ready
-        run: sleep 10
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8080/api/health; then
+              echo "Backend is up!"
+              exit 0
+            fi
+            echo "Waiting for backend... ($i/30)"
+            sleep 2
+          done
+          echo "Backend never came up"
+          exit 1
 
-      - name: Test backend health endpoint
-        run: curl -f http://localhost:8080/api/health || exit 1
+      - name: Show container logs if something failed
+        if: failure()
+        run: docker compose logs
+
+      - name: Shut down containers
+        if: always()
+        run: docker compose down
