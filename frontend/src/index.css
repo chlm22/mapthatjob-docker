@@ -1,0 +1,333 @@
+/* --- Base Variables (Light Mode & Medium Font by Default) --- */
+:root {
+  --bg-color: #f9fafb;
+  --text-color: #111827;
+  --header-bg: #1e3a8a;
+  --header-text: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #e5e7eb;
+  --button-bg: #3b82f6;
+  --button-hover: #2563eb;
+  --button-text: #ffffff;
+  --visited-bg: #f3f4f6;
+  --base-font-size: 16px; 
+}
+
+/* --- Dark Mode Overrides --- */
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #e5e7eb;
+  --header-bg: #111827;
+  --header-text: #e5e7eb;
+  --card-bg: #1f2937;
+  --border-color: #374151;
+  --button-bg: #4b5563;
+  --button-hover: #6b7280;
+  --visited-bg: #111827;
+}
+
+/* --- Dark Mode Map, Pins & Popups --- */
+[data-theme="dark"] .leaflet-tile-pane,
+[data-theme="dark"] .leaflet-marker-pane,
+[data-theme="dark"] .leaflet-shadow-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+[data-theme="dark"] .leaflet-popup-content-wrapper,
+[data-theme="dark"] .leaflet-popup-tip {
+  background: var(--card-bg);
+  color: var(--text-color);
+  
+}
+
+
+/* Force Leaflet to respect dynamic font sizing */
+.leaflet-container {
+  font-size: 1rem; 
+  font-family: inherit;
+}
+
+.leaflet-popup-content {
+  font-size: 1rem;
+  margin: 1em; /* Scales the popup padding nicely with the font */
+}
+
+
+/* 1. Make the map background dark */
+[data-theme="dark"] .leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* 2. Make the pins Bright Orange! 
+   (Inverting the default blue pin makes it a perfect orange, and we boost saturation so it pops) */
+[data-theme="dark"] .leaflet-marker-pane {
+  filter: invert(100%) saturate(300%) hue-rotate(10deg);
+}
+
+/* 3. Keep the pin shadows looking like normal shadows */
+[data-theme="dark"] .leaflet-shadow-pane {
+  filter: invert(100%);
+}
+
+/* 4. Dark popups */
+[data-theme="dark"] .leaflet-popup-content-wrapper,
+[data-theme="dark"] .leaflet-popup-tip {
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+
+/* --- Font Size Overrides --- */
+[data-font="small"] { --base-font-size: 12px; }
+[data-font="medium"] { --base-font-size: 16px; }
+[data-font="large"] { --base-font-size: 20px; }
+
+/* --- Global Resets & Accessibility Rings --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:focus-visible {
+  outline: 3px solid #ff9900;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: var(--base-font-size);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s, font-size 0.3s;
+}
+
+/* --- Layout --- */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* --- Header & Logo --- */
+.header {
+  background: var(--header-bg);
+  color: var(--header-text);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-logo {
+  height: 40px;
+  width: 40px;
+  border-radius: 8px;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+}
+
+/* --- Accessibility Controls --- */
+.controls-container {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.control-group h3 {
+  font-size: 0.9rem;
+  margin-right: 0.25rem;
+}
+
+.controls-container button {
+  background: var(--button-bg);
+  color: var(--button-text);
+  font-size: 0.85rem;
+  padding: 0.4em 0.8em;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.1s, outline 0.1s;
+}
+
+.controls-container button.active {
+  outline: 2px solid #ff9900;
+  outline-offset: 1px;
+}
+
+/* --- Search & Dropdown --- */
+.search-container {
+  position: relative;
+}
+
+.search-form {
+  display: flex;
+}
+
+.search-form input {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  margin-right: 0.5rem;
+  width: 250px;
+  font-size: 1rem;
+  background: var(--card-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.search-form button {
+  padding: 0.5rem 1rem;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.search-form button:hover {
+  background: var(--button-hover);
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 250px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  list-style: none;
+  margin: 4px 0 0 0;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+}
+
+.suggestions-dropdown li {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.suggestions-dropdown li:last-child {
+  border-bottom: none;
+}
+
+.suggestions-dropdown li:hover,
+.suggestions-dropdown li:focus-visible {
+  background-color: var(--visited-bg);
+}
+
+/* --- Main Content Area --- */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.job-list {
+  width: 400px;
+  overflow-y: auto;
+  padding: 1rem;
+  background: var(--bg-color);
+  border-right: 1px solid var(--border-color);
+  transition: background-color 0.3s;
+}
+
+.job-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.job-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.job-card .company {
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}
+
+.job-card button {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.job-card button:hover {
+  background: #059669;
+}
+
+/* Highlights the active job in the sidebar */
+.job-card.active-job {
+  border-color: var(--button-bg);
+  box-shadow: 0 0 0 2px var(--button-bg);
+  transform: translateY(-2px);
+}
+
+.visited-job {
+  opacity: 0.6;
+  background-color: var(--visited-bg);
+  border-color: var(--border-color);
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .controls-container {
+    justify-content: space-between;
+  }
+  .search-form input {
+    flex: 1;
+    width: auto;
+  }
+  .main-content {
+    flex-direction: column;
+  }
+  .job-list {
+    width: 100%;
+    height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+}

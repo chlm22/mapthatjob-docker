@@ -1,0 +1,28 @@
+name: Docker Compose Build & Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Start services using Docker Compose
+        env:
+          # Pulls the secrets you saved in GitHub Settings
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+        run: docker compose up --build -d
+
+      - name: Wait for backend to be ready
+        run: sleep 10
+
+      - name: Test backend health endpoint
+        run: curl -f http://localhost:8080/api/health || exit 1
