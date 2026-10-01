@@ -38,5 +38,8 @@ PORT=8080
 ***Make sure Ensure you have a .gitignore file that includes .env before pushing this project to a public repository to protect your API keys.***
 
 ### 3. Launch the Application
-Start the containers using Docker Compose:
+* Run this command in the main project folder:\
 docker compose up --build
+* Then open http://localhost:5173 in your browser.\
+* To stop the app, press Ctrl+C, then run:\
+docker compose down
