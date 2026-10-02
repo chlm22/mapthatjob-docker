@@ -96,36 +96,54 @@ export default function App() {
     return () => clearTimeout(delayDebounceFn);
   }, [searchInput]);
 
-  const fetchJobs = async (loc) => {
+const fetchJobs = async (loc) => {
     setLoading(true);
+    setError(null); // Clear any old errors before starting
     try {
       const res = await fetch(`/api/jobs?location=${encodeURIComponent(loc)}`);
+      
+      if (!res.ok) {
+        throw new Error("Server rejected the location");
+      }
+
       const data = await res.json();
       setJobs(data || []);
       
-      // ONLY center the map if the search came from the search bar
       if (centerMapRef.current) {
         const firstValidJob = data.find(j => j.lat && j.lng);
         if (firstValidJob) {
            setMapCenter([firstValidJob.lat, firstValidJob.lng]);
         }
       }
-      // Reset the flag back to true for the next searchhh
       centerMapRef.current = true; 
       
     } catch (err) {
       console.error("Failed to fetch jobs:", err);
+      setError("We couldn't load jobs for that location. Please try again.");
+      setJobs([]); // Clear the board
     }
     setLoading(false);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchInput.trim()) {
-      centerMapRef.current = true; // Ensure map snaps to new searched city
-      setLocation(searchInput);
-      setSuggestions([]); 
+    const cleanInput = searchInput.trim();
+
+    // Preventsss submitting empty searches
+    if (!cleanInput) return;
+
+    // Sanitize: Check if the input of search bar contains crazy symbols
+    if (!/^[\p{L}\p{M}\d\s,.'’#()&-]+$/u.test(cleanInput)) {
+      setError("Please enter a valid city name (e.g., Novi, MI).");
+      setJobs([]); // Clear out the old jobs
+      return; 
     }
+
+    // If it passes the test, proceed normally
+    setError(null); 
+    centerMapRef.current = true;
+    setLocation(cleanInput);
+    setSuggestions([]); 
   };
 
   const handleSuggestionClick = (placeName) => {
@@ -186,6 +204,8 @@ export default function App() {
       
       <main className="main-content">
         <div className="job-list">
+          {/* Display the error message if one exists */}
+          {error && <p style={{ color: '#ff6b6b', fontWeight: 'bold', padding: '10px' }}>{error}</p>}
           {loading ? <p>Loading jobs...</p> : jobs.map(job => (
             <div 
               key={job.id} 
