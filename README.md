@@ -13,7 +13,7 @@ I built this version to be small and simple: no database and no cloud bill, so a
 
 * **Isolated Containers:** The React frontend and the Express backend each run in their own Docker container and talk to each other over a private network. This is the same setup many real-world apps use.
 
-* **Stateless UI Tracking:** Instead of relying on PostgreSQL or `localStorage` for user sessions, "Visited" jobs are tracked using an ephemeral React `Set`. This safely highlights clicked jobs and reduces map pin opacity, naturally wiping clean on every page reload for seamless back-to-back testing.
+* **Temporary UI Tracking:** Instead of relying on PostgreSQL or `localStorage` for user sessions, "Visited" jobs are tracked using an ephemeral React `Set`. This safely highlights clicked jobs and reduces map pin opacity, naturally wiping clean on every page reload for seamless back-to-back testing.
 
 * **Backend API Gateway:** Backend keeps secrets safe. The browser never talks to the job search service directly. Instead, the Express backend sits in the middle: it checks every city you type, asks the Adzuna Job API for jobs, and sends the results back. This way, the secret API keys stay on the server and never reach your browser.
 
