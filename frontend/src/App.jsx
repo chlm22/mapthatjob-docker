@@ -54,10 +54,10 @@ export default function App() {
   const [searchInput, setSearchInput] = useState('');
   const [suggestions, setSuggestions] = useState([]); 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);   // 👈 add this
   const [visitedJobs, setVisitedJobs] = useState(new Set());
   const [mapCenter, setMapCenter] = useState([42.28, -83.74]); 
-  
-  // NEW: State and Refs for syncing the list and the map
+ 
   const [activeJobId, setActiveJobId] = useState(null);
   const centerMapRef = useRef(true); // Tracks if the map should snap to center
   const jobRefs = useRef({});        // Stores references to the sidebar job cards
